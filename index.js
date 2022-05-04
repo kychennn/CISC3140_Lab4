@@ -18,8 +18,7 @@ const db = new sqlite3.Database('lab4.db', (err) => {
     }
 });
 
-// GET REST API Request, HTTP Method Type: GET
-
+// -------GET REST API Request, HTTP Method Type: GET-------
 // Display results of all cars present in the CSV file
 // http://localhost:8000/car
 app.get("/car", (req, res, next) => {
@@ -71,7 +70,9 @@ app.get("/owner/:id", (req, res, next) => {
 });
 
 
-// Create REST API Request, HTTP Method Type: POST
+// -------Create REST API Request, HTTP Method Type: POST-------
+// Inserting new car data record
+// http://localhost:8000/car/
 app.post("/car/", (req, res, next) => {
     var reqBody = req.body;
     db.run("INSERT INTO Car (Car_ID, Year, Make, Model, Racer_Turbo, Racer_Supercharged, Racer_Performance, Racer_Horsepower, Car_Overall, Engine_Modifications, Engine_Performance, Engine_Chrome, Engine_Detailing, Engine_Cleanliness, Body_Frame_Undercarriage, Body_Frame_Suspension, Body_Frame_Chrome, Body_Frame_Detailing, Body_Frame_Cleanliness, Mods_Paint, Mods_Body, Mods_Wrap, Mods_Rims, Mods_Interior, Mods_Other, Mods_ICE, Mods_Aftermarket, Mods_WIP, Mods_Overall) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
@@ -87,7 +88,8 @@ app.post("/car/", (req, res, next) => {
         });
 });
 
-
+// Inserting new owner data record
+// http://localhost:8000/owner/
 app.post("/owner/", (req, res, next) => {
     var reqBody = req.body;
     db.run("INSERT INTO Owner (Car_ID, Name, Email) VALUES (?, ?, ?)",
@@ -104,14 +106,35 @@ app.post("/owner/", (req, res, next) => {
 });
 
 
-// update
-app.patch("/owner/", (req, res, next) => {
+// -------Update REST API Request, HTTP Method Type: PATCH-------
+// Updating car data record
+// http://localhost:8000/car/1111
+app.patch("/car/:id", (req, res, next) => {
     var reqBody = req.body;
-    db.run("UPDATE Owner set Name = ?, Email = ?, WHERE Car_ID = ?",
-        [reqBody.Name, reqBody.Email, reqBody.Car_ID],
+    var params = [req.params.id];
+    db.run("UPDATE Car set Year = ?, Make = ?, Model = ?, Racer_Turbo = ?, Racer_Supercharged = ?, Racer_Performance = ?, Racer_Horsepower = ?, Car_Overall = ?, Engine_Modifications = ?, Engine_Performance = ?, Engine_Chrome = ?, Engine_Detailing = ?, Engine_Cleanliness = ?, Body_Frame_Undercarriage = ?, Body_Frame_Suspension = ?, Body_Frame_Chrome = ?, Body_Frame_Detailing = ?, Body_Frame_Cleanliness = ?, Mods_Paint = ?, Mods_Body = ?, Mods_Wrap = ?, Mods_Rims = ?, Mods_Interior = ?, Mods_Other = ?, Mods_ICE = ?, Mods_Aftermarket = ?, Mods_WIP = ?, Mods_Overall = ? WHERE Car_ID = ?",
+    [reqBody.Year, reqBody.Make, reqBody.Model, reqBody.Racer_Turbo, reqBody.Racer_Supercharged, reqBody.Racer_Performance, reqBody.Racer_Horsepower, reqBody.Car_Overall, reqBody.Engine_Modifications, reqBody.Engine_Performance, reqBody.Engine_Chrome, reqBody.Engine_Detailing, reqBody.Engine_Cleanliness, reqBody.Body_Frame_Undercarriage, reqBody.Body_Frame_Suspension, reqBody.Body_Frame_Chrome, reqBody.Body_Frame_Detailing, reqBody.Body_Frame_Cleanliness, reqBody.Mods_Paint, reqBody.Mods_Body, reqBody.Mods_Wrap, reqBody.Mods_Rims, reqBody.Mods_Interior, reqBody.Mods_Other, reqBody.Mods_ICE, reqBody.Mods_Aftermarket, reqBody.Mods_WIP, reqBody.Mods_Overall, params],
         function (err, result) {
             if (err) {
-                res.status(400).json({ "error": res.message })
+                res.status(400).json({ "error": res.message });
+                console.error()
+                return;
+            }
+            res.status(200).json({ updatedID: this.changes });
+        });
+});
+
+// Updating owner data record
+// http://localhost:8000/owner/9999
+app.patch("/owner/:id", (req, res, next) => {
+    var reqBody = req.body;
+    var params = [req.params.id];
+    db.run("UPDATE Owner set Name = ?, Email = ? WHERE Car_ID = ?",
+        [reqBody.Name, reqBody.Email, params],
+        function (err, result) {
+            if (err) {
+                res.status(400).json({ "error": res.message });
+                console.error()
                 return;
             }
             res.status(200).json({ updatedID: this.changes });
