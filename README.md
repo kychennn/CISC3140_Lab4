@@ -26,10 +26,10 @@ The objective of this lab is to build a backend API using a combination of SQL a
   (```nodemon index```automatically restarts the process)
 
 ## Source code files
-* - [data.csv](https://gist.github.com/katychuang/d66a59b6db4e59c16efd4c42ad411f8e): Sample data file
-* - [database.sql](./database.sql): Creates the required database with the specified tables using SQLite script
-* - [index.js](./index.js): Creates routes and API endpoints
-* - [API_endpoints.md](./API_endpoints.md): A description of API endpoints
+* [data.csv](https://gist.github.com/katychuang/d66a59b6db4e59c16efd4c42ad411f8e): Sample data file
+* [database.sql](./database.sql): Creates the required database with the specified tables using SQLite script
+* [index.js](./index.js): Creates routes and API endpoints
+* [API_endpoints.md](./API_endpoints.md): A description of API endpoints
 
 
 ## Helpful Documents
